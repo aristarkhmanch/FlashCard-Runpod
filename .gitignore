@@ -1,0 +1,8 @@
+.env
+leads.jsonl
+scrape_cache.json
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store

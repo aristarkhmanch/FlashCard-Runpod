@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0717" />
+  <title>FlashCard — Forge your hero card</title>
+  <meta name="description" content="Turn your LinkedIn into a personalized hero card in seconds." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+
+  <main class="shell">
+    <header class="masthead">
+      <div class="brandmark"><span class="bolt">⚡</span><span class="wordmark">FlashCard</span></div>
+      <h1 class="headline">Forge your <span class="grad">hero card</span></h1>
+      <p class="subhead">Drop your LinkedIn. We mint a one-of-a-kind card — with your own QR — you'll actually want to post.</p>
+    </header>
+
+    <!-- FORM -->
+    <section id="view-form" class="panel">
+      <form id="card-form" novalidate>
+        <label class="field">
+          <span class="field-label">Email <em>required</em></span>
+          <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com" required />
+          <span class="field-error" data-error-for="email"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">LinkedIn URL <em>required</em></span>
+          <input id="linkedin_url" type="url" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="linkedin.com/in/your-handle" />
+          <span class="field-error" data-error-for="linkedin_url"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Event <em>optional</em></span>
+          <input id="event" type="text" placeholder="RunPod Flash Hack Day" />
+        </label>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <button type="submit" id="submit-btn" class="cta"><span class="cta-label">Generate my card</span></button>
+        <p class="reassure">Takes a few seconds. No spam, ever.</p>
+      </form>
+    </section>
+
+    <!-- LOADING -->
+    <section id="view-loading" class="panel center" hidden>
+      <div class="forge"><div class="forge-card"><div class="shimmer"></div></div></div>
+      <ul class="steps" id="steps">
+        <li data-step>Reading your LinkedIn <em>Bright Data</em></li>
+        <li data-step>Writing your post</li>
+        <li data-step>Spinning up a RunPod GPU</li>
+        <li data-step>Painting your card</li>
+        <li data-step>Baking in your QR</li>
+      </ul>
+    </section>
+
+    <!-- RESULT -->
+    <section id="view-result" class="panel center" hidden>
+      <div class="result-card"><img id="result-img" alt="Your personalized hero card" /></div>
+      <div class="result-meta">
+        <p class="result-name" id="result-name"></p>
+        <p class="result-title" id="result-title"></p>
+      </div>
+      <div class="actions">
+        <a id="download-btn" class="cta" download="flashcard.png"><span class="cta-label">Download card</span></a>
+        <button type="button" id="again-btn" class="cta ghost"><span class="cta-label">Make another</span></button>
+      </div>
+
+      <div class="post-block">
+        <div class="post-head"><span>Ready-to-post on X</span><button class="copy" data-copy="tweet">Copy</button></div>
+        <p class="post-text" id="tweet-text"></p>
+      </div>
+      <div class="post-block">
+        <div class="post-head"><span>Ready-to-post on LinkedIn</span><button class="copy" data-copy="post">Copy</button></div>
+        <p class="post-text" id="post-text"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><span>Built at RunPod Flash Hack Day · RunPod + Bright Data</span></footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
