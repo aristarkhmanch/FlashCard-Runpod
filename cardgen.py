@@ -150,10 +150,15 @@ def build_card(art_bytes: bytes, name: str, role: str, qr_img) -> bytes:
     canvas.paste(art, (0, 0))
     d = ImageDraw.Draw(canvas)
 
-    # name band text
-    d.text((44, 1040), (name or "Hero")[:28], font=_font(66), fill=(255, 255, 255))
+    # text must stop before the QR (if present) so long names don't collide with it
+    text_right = (W - 236 - 16) if qr_img is not None else (W - 44)
+    max_w = text_right - 44
+
+    # name band text — auto-shrink so long names fit the available width
+    name_font = _fit_font(d, name or "Hero", max_w, start=66, min_size=34)
+    d.text((44, 1040), name or "Hero", font=name_font, fill=(255, 255, 255))
     if role:
-        d.text((46, 1124), role[:40], font=_font(34), fill=(217, 194, 255))
+        d.text((46, 1124), _truncate(d, role, max_w, _font(34)), font=_font(34), fill=(217, 194, 255))
     d.text((46, 1238), "Forged on RunPod Flash  -  Bright Data", font=_font(24), fill=(176, 146, 216))
 
     # LinkedIn QR, bottom-right, white quiet zone
@@ -188,3 +193,31 @@ def _font(size: int):
         except Exception:
             continue
     return ImageFont.load_default()
+
+
+def _text_w(draw, text, font) -> float:
+    try:
+        return draw.textlength(text, font=font)
+    except Exception:
+        return len(text) * font.size * 0.6
+
+
+def _fit_font(draw, text, max_w, start=66, min_size=34):
+    """Largest font (down to min_size) at which `text` fits within max_w px."""
+    size = start
+    while size > min_size:
+        f = _font(size)
+        if _text_w(draw, text, f) <= max_w:
+            return f
+        size -= 2
+    return _font(min_size)
+
+
+def _truncate(draw, text, max_w, font):
+    """Trim with an ellipsis if `text` overflows max_w at the given font."""
+    if _text_w(draw, text, font) <= max_w:
+        return text
+    s = text
+    while s and _text_w(draw, s + "…", font) > max_w:
+        s = s[:-1]
+    return (s + "…") if s else text
